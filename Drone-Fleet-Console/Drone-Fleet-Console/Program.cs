@@ -1,4 +1,6 @@
-﻿Console.WriteLine("== Drone Fleet ==");
+﻿using Drone_Fleet_Console.Models;
+
+Console.WriteLine("== Drone Fleet ==");
 
 void PrintMenu()
 {
@@ -32,8 +34,16 @@ while(option!=8)
             {
                 Console.Write("Type (Survey/Delivery/Racing): ");
                 string type = Console.ReadLine();
-                //this is where we will call the factory i guess
-                break;
+                Enum.TryParse(type, out DroneType droneType);
+                if (droneType == DroneType.Delivery)
+                {
+                    DeliveryDrone deliveryDrone = new DeliveryDrone();
+                    Console.WriteLine($"Added {deliveryDrone.Name} with ID {deliveryDrone.DroneId}");
+                    deliveryDrone.Load(2);
+                    Console.WriteLine("Current Load: " + deliveryDrone.CurrentLoadKg);
+                    //this is where we will call the factory i guess
+                }
+                    break;
             }
         case 3:
             {
