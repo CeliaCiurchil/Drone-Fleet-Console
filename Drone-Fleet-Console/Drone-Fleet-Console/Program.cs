@@ -1,6 +1,8 @@
 ﻿Console.WriteLine("== Drone Fleet ==");
 
-Console.WriteLine("""
+void PrintMenu()
+{
+    Console.WriteLine("""
         1. List drones
         2. Add drone
         3. Pre-flight check
@@ -10,8 +12,11 @@ Console.WriteLine("""
         7. Charge battery
         8. Exit
     """);
+    Console.Write("Enter an option: ");
+}
 
-Console.Write("Enter an option: ");
+PrintMenu();
+
 int option = int.Parse(Console.ReadLine());
 
 while(option!=8)
@@ -62,7 +67,7 @@ while(option!=8)
                 break;
             }
     }
-    Console.Write("Enter an option: ");
+    PrintMenu();
     option = int.Parse(Console.ReadLine());
 
 }
