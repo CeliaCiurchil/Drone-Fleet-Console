@@ -1,5 +1,21 @@
 ﻿using Drone_Fleet_Console.Models;
 
+//to move to a drone fleet manager class later
+
+List<Drone> droneFleet = new List<Drone>();
+
+Drone? GetDroneById(int droneId)
+{
+    foreach (var drone in droneFleet)
+    {
+        if (drone.DroneId == droneId)
+        {
+            return drone;
+        }
+    }
+    return null;
+}
+
 Console.WriteLine("== Drone Fleet ==");
 
 void PrintMenu()
@@ -28,6 +44,10 @@ while(option!=8)
         case 1:
             {
                 //this si where the drones will be listed
+                foreach (var drone in droneFleet)
+                {
+                    drone.DisplayDrone();
+                }
                 break;
             }
         case 2:
@@ -35,20 +55,28 @@ while(option!=8)
                 Console.Write("Type (Survey/Delivery/Racing): ");
                 string type = Console.ReadLine();
                 Enum.TryParse(type, out DroneType droneType);
+
+                //this is where we will call the factory i guess
+
                 if (droneType == DroneType.Delivery)
                 {
-                    DeliveryDrone deliveryDrone = new DeliveryDrone();
+                    DeliveryDrone deliveryDrone = new DeliveryDrone(5);
+                    droneFleet.Add(deliveryDrone);
+
                     Console.WriteLine($"Added {deliveryDrone.Name} with ID {deliveryDrone.DroneId}");
-                    deliveryDrone.Load(2);
-                    Console.WriteLine("Current Load: " + deliveryDrone.CurrentLoadKg);
-                    //this is where we will call the factory i guess
+                    
                 }
                     break;
             }
         case 3:
             {
                 // this is where the pre-flight check happens battery should be <20% done in the Class, the asbtract classs should have battery
-
+                foreach (var drone in droneFleet)
+                {
+                    bool ok = drone.RunSelfTest();
+                    string message = ok ? "Pass" : "Fail";
+                    Console.WriteLine($"Drone ID {drone.DroneId} Pre-flight check: {message}");
+                }
                 break;
             }
         case 4:
@@ -59,11 +87,26 @@ while(option!=8)
         case 5:
             {
                 // set waypoint for a selected drone (lat , lon)
+
                 break;
             }
         case 6:
             {
                 // capability actions based on type of drones
+                Console.Write("Enter drone id: ");
+                int droneId = int.Parse(Console.ReadLine());
+
+                Drone? drone = GetDroneById(droneId);
+                if (drone != null)
+                {
+                    drone.GetActions();
+                    int droneOption = int.Parse(Console.ReadLine());
+                    drone.PerformAction(droneOption);
+                }
+                else
+                {
+                    Console.WriteLine("Drone not found.");
+                }
                 break;
             }
         case 7:
