@@ -1,4 +1,5 @@
 ﻿using Drone_Fleet_Console.Models;
+using Drone_Fleet_Console.Services;
 
 //to move to a drone fleet manager class later
 
@@ -56,14 +57,15 @@ while(option!=8)
                 string type = Console.ReadLine();
                 Enum.TryParse(type, out DroneType droneType);
 
-                //this is where we will call the factory i guess
+                //factory call
+
+                Drone drone = DroneFactory.GetDrone(droneType);
 
                 if (droneType == DroneType.Delivery)
                 {
-                    DeliveryDrone deliveryDrone = new DeliveryDrone(5);
-                    droneFleet.Add(deliveryDrone);
+                    droneFleet.Add(drone);
 
-                    Console.WriteLine($"Added {deliveryDrone.Name} with ID {deliveryDrone.DroneId}");
+                    Console.WriteLine($"Added {drone.Name} with ID {drone.DroneId}");
                     
                 }
                     break;
