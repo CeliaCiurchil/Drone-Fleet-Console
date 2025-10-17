@@ -9,9 +9,12 @@ namespace Drone_Fleet_Console.Models
 {
     abstract class Drone : IFlightControl, ISelfTest
     {
+        public static readonly int MinBatteryForTakeOff = 20;
         public Drone()
         {
             DroneId = s_nextDroneId++;
+            BatteryPercentage = 100;
+            isAirborne = false;
         }
         static Drone()
         {
@@ -21,22 +24,52 @@ namespace Drone_Fleet_Console.Models
         public int DroneId { get; }
         public string? Name { get; set; }
         public int BatteryPercentage { get; set; }
-        public bool isAirborne { get; set; }
+        public bool isAirborne { get; private set; }
         static int s_nextDroneId = 1;
 
         public void TakeOff()
         {
-            throw new NotImplementedException();
+            if (isAirborne)
+            {
+                Console.WriteLine("Drone is already airborne.");
+                return;
+            }
+            if (RunSelfTest() == false)
+            {
+                Console.WriteLine("Pre-flight check failed. Cannot take off.");
+                return;
+            }
+            isAirborne = true;
+            Console.WriteLine($"Drone {Name} is flying.");
         }
 
         public void Land()
         {
-            throw new NotImplementedException();
+            if(!isAirborne)
+            {
+                Console.WriteLine("Drone is already on the ground.");
+                return;
+            }
+            isAirborne = false;
+            Console.WriteLine($"Drone {Name} has landed successfully.");
         }
 
         public bool RunSelfTest()
         {
-            throw new NotImplementedException();
+            return BatteryPercentage >= MinBatteryForTakeOff;
+        }
+        public void DisplayDrone()
+        {
+            Console.WriteLine($"Drone ID: {DroneId}");
+            Console.WriteLine($"Name: {Name}");
+            Console.WriteLine($"Battery: {BatteryPercentage}%");
+            Console.WriteLine($"Status: {(isAirborne ? "In Air" : "On Ground")}");
+        }
+
+        internal abstract void GetActions();
+        internal virtual void PerformAction(int? option = null)
+        {
+            Console.WriteLine("No actions available for this drone type.");
         }
     }
 }
