@@ -14,8 +14,7 @@ namespace Drone_Fleet_Console.Services
             switch (droneType)
             {
                 case DroneType.Survey:
-                    //return new SurveyDrone();
-                    break;
+                    return new SurveyDrone();
                 case DroneType.Delivery:
                     {
                         Console.Write("Enter capacity in kg for Delivery Drone: ");
@@ -23,8 +22,7 @@ namespace Drone_Fleet_Console.Services
                         return new DeliveryDrone(capacityKg);
                     }
                 case DroneType.Racing:
-                    //return new RacingDrone();
-                    break;
+                    return new RacingDrone();
                 default:
                     throw new ArgumentException("Invalid drone type");
             }
