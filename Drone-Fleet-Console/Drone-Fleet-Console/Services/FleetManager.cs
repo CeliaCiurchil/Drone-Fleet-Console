@@ -30,8 +30,7 @@ namespace Drone_Fleet_Console.Services
                     return drone;
                 }
             }
-            Console.WriteLine("Drone not found.");
-            return null;
+            throw new ArgumentException($"Drone with ID {droneId} not found.");
         }
         public void DisplayDrones()
         {
