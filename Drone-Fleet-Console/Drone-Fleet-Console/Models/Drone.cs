@@ -14,7 +14,7 @@ namespace Drone_Fleet_Console.Models
 
         public int DroneId { get; }
         public string? Name { get; set; }
-        public int BatteryPercentage { get; private set; }
+        public int BatteryPercentage { get; protected set; }
         public bool isAirborne { get; private set; }
 
         static Drone()
@@ -43,6 +43,7 @@ namespace Drone_Fleet_Console.Models
             }
             isAirborne = true;
             Console.WriteLine($"Drone {Name} is flying.");
+            BatteryPercentage -= 10;
         }
         public void Land()
         {
@@ -53,6 +54,7 @@ namespace Drone_Fleet_Console.Models
             }
             isAirborne = false;
             Console.WriteLine($"Drone {Name} has landed successfully.");
+            BatteryPercentage -= 10;
         }
         public bool RunSelfTest()
         {

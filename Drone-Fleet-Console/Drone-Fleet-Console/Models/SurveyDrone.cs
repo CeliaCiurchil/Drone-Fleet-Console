@@ -32,6 +32,7 @@ namespace Drone_Fleet_Console.Models
             }
             PhotoCount++;
             Console.WriteLine($"Photo taken. Total photos: {PhotoCount}");
+            BatteryPercentage -= 5;
         }
 
         public override void GetActions()

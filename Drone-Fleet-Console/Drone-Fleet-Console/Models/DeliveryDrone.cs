@@ -21,21 +21,25 @@ namespace Drone_Fleet_Console.Models
             CapacityKg = capacityKg;
         }
 
-        public bool Load(double kg)
+        public bool Load(double kg, out string? message)
         {
+            message = null;
             if (kg <= 0 || kg + CurrentLoadKg > CapacityKg)
             {
-                Console.WriteLine("Cannot load cargo: exceeds capacity or invalid weight.");
+                message = "Cannot load cargo: exceeds capacity or invalid weight.";
                 return false;
             }
             CurrentLoadKg += kg;
-            Console.WriteLine($"Loaded {kg} kg. Current load: {CurrentLoadKg} kg.");
+            message = $"Loaded {kg} kg. Current load: {CurrentLoadKg} kg.";
+            BatteryPercentage -= 15; 
             return true;
         }
-        public void UnloadAll()
+        public void UnloadAll(out string? message)
         {
+            message = null;
             CurrentLoadKg = 0;
-            Console.WriteLine("All cargo unloaded. Current load: 0 kg.");
+            message="All cargo unloaded. Current load: 0 kg.";
+            BatteryPercentage -= 15;
         }
         public void SetWaypoint(Coordinates coordinates)
         {
@@ -50,13 +54,15 @@ namespace Drone_Fleet_Console.Models
         }
         public override void PerformAction(int? option = null)
         {
+            string? message = null;
             switch (option)
             {
                 case 1:
                     Console.Write("Enter weight to load (kg): ");
                     if (double.TryParse(Console.ReadLine(), out double loadWeight))
                     {
-                        Load(loadWeight);
+                        Load(loadWeight, out message);
+                        Console.WriteLine(message);
                     }
                     else
                     {
@@ -64,7 +70,8 @@ namespace Drone_Fleet_Console.Models
                     }
                     break;
                 case 2:
-                    UnloadAll();
+                    UnloadAll(out message);
+                    Console.WriteLine(message);
                     break;
                 default:
                     Console.WriteLine("Invalid action for Delivery Drone.");
