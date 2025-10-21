@@ -66,6 +66,36 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"Status: {(isAirborne ? "In Air" : "On Ground")}");
         }
 
+        public bool Charge(int addPercent)
+        {
+            if (addPercent < 0 || addPercent > 100)
+            {
+                Console.WriteLine("Charge amount must be between 0 and 100.");
+                return false;
+            }
+
+            // Safety: don’t allow charging while airborne
+            if (isAirborne)
+            {
+                Console.WriteLine("Cannot charge while airborne. Please land first.");
+                return false;
+            }
+
+            if (BatteryPercentage >= 100)
+            {
+                Console.WriteLine($"{Name} is already at 100%.");
+                return false;
+            }
+
+            int before = BatteryPercentage;
+            // Clamp to 100
+            BatteryPercentage = Math.Min(100, BatteryPercentage + addPercent);
+
+            Console.WriteLine($"{Name} charged from {before}% to {BatteryPercentage}%.");
+            return true;
+        }
+
+
         internal abstract void GetActions();
         internal virtual void PerformAction(int? option = null)
         {
