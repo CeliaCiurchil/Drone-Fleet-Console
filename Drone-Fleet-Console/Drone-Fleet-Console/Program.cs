@@ -22,14 +22,25 @@ void PrintMenu()
     Console.Write("Enter an option: ");
 }
 
-PrintMenu();
 
-int option = int.Parse(Console.ReadLine());
+int option=0; 
 
 while(option!=8)
 {
     try
     {
+        PrintMenu();
+        if(!int.TryParse(Console.ReadLine(), out option))
+        {
+            Console.WriteLine("Invalid input. Please enter a number.");
+            continue;
+        }   
+
+        if(option == 8)
+        {
+            break;
+        }
+
         switch (option)
         {
             case 1:
@@ -43,7 +54,8 @@ while(option!=8)
                     string? type = Console.ReadLine();
                     if (!Enum.TryParse(type, true, out DroneType droneType))
                     {
-                        throw new ArgumentException($"Invalid drone type: '{type}'. Please enter Survey, Delivery, or Racing.");
+                        Console.WriteLine($"Invalid drone type: '{type}'. Please enter Survey, Delivery, or Racing.");
+                        continue;
                     }
                     fleetManager.AddDrone(droneType);
                     break;
@@ -59,68 +71,91 @@ while(option!=8)
                     Console.Write("Enter drone id: ");
                     if(!int.TryParse(Console.ReadLine(), out int droneId))
                     {
-                        throw new ArgumentException($"Invalid type. Please enter a valid ID.");
+                        Console.WriteLine($"Invalid type. Please enter a valid ID.");
+                        continue;
                     }
 
                     Drone? drone = fleetManager.GetDroneById(droneId);
-                    if (drone != null)
-                    {
-                        if (drone.isAirborne)
-                        {
-                            drone.Land();
-                        }
-                        else
-                        {
-                            drone.TakeOff();
-                        }
-                    }
+                    if (drone.isAirborne) drone.Land();
+                    else drone.TakeOff();
+                    
                     break;
                 }
             case 5:
                 {
                     // set waypoint for a selected drone (lat , lon)
                     Console.Write("Enter drone id: ");
-                    int droneId = int.Parse(Console.ReadLine());
-
+                    if (!int.TryParse(Console.ReadLine(), out int droneId))
+                    {
+                        Console.WriteLine($"Invalid type. Please enter a valid ID.");
+                        continue;
+                    }
                     Drone? drone = fleetManager.GetDroneById(droneId);
 
-                    if (drone != null)
+                    if (drone is INavigable navigableDrone)
                     {
-                        if (drone is INavigable navigableDrone)
+                        Console.Write("Enter latitude: ");
+                        string? latInput = Console.ReadLine();
+                        if (!double.TryParse(latInput, out double latitude))
                         {
-                            Console.Write("Enter latitude: ");
-                            double latitude = double.Parse(Console.ReadLine());
-                            Console.Write("Enter longitude: ");
-                            double longitude = double.Parse(Console.ReadLine());
-                            Coordinates coordinates = new Coordinates(latitude, longitude);
-                            navigableDrone.SetWaypoint(coordinates);
-                            Console.WriteLine($"Waypoint set to ({latitude}, {longitude}) for Drone ID {drone.DroneId}");
+                            Console.WriteLine("Invalid latitude. Please enter a valid number.");
+                            break;
                         }
-                        else
+
+                        Console.Write("Enter longitude: ");
+                        string? lonInput = Console.ReadLine();
+                        if (!double.TryParse(lonInput, out double longitude))
                         {
-                            Console.WriteLine("This drone type does not support navigation.");
+                            Console.WriteLine("Invalid longitude. Please enter a valid number.");
+                            break;
                         }
+
+                        Coordinates coordinates = new Coordinates(latitude, longitude);
+                        navigableDrone.SetWaypoint(coordinates);
+                        Console.WriteLine($"Waypoint set to ({latitude}, {longitude}) for Drone ID {drone.DroneId}");
                     }
+                    else
+                    {
+                        Console.WriteLine("This drone type does not support navigation.");
+                    }
+
                     break;
                 }
             case 6:
                 {
                     // capability actions based on type of drones
                     Console.Write("Enter drone id: ");
-                    int droneId = int.Parse(Console.ReadLine());
+                    if(!int.TryParse(Console.ReadLine(),out int droneId))
+                    {
+                        Console.WriteLine("Invalid drone ID. Please enter a valid number.");
+                        continue;
+                    }
 
                     Drone? drone = fleetManager.GetDroneById(droneId);
-                    if (drone != null)
+                    drone.GetActions();
+                    if(!int.TryParse(Console.ReadLine(), out int droneOption))
                     {
-                        drone.GetActions();
-                        int droneOption = int.Parse(Console.ReadLine());
-                        drone.PerformAction(droneOption);
+                        Console.WriteLine("Invalid option. Please enter a valid number.");
                     }
+                    drone.PerformAction(droneOption);
                     break;
                 }
             case 7:
                 {
-                    // charge battery of a selected drone in the fleet
+                    Console.Write("Enter drone id: ");
+                    if (!int.TryParse(Console.ReadLine(), out int droneId))
+                    {
+                        Console.WriteLine("Invalid drone ID. Please enter a valid number.");
+                        continue;
+                    }
+                    Drone? drone = fleetManager.GetDroneById(droneId);
+                    Console.Write("Chraging drone...(Enter Percent): ");
+                    if (!int.TryParse(Console.ReadLine(), out int batteryPercent))
+                    {
+                        Console.WriteLine("Invalid batteryPercent. Please enter a valid number.");
+                        continue;
+                    }
+                    drone!.Charge(batteryPercent);
                     break;
                 }
             default:
@@ -129,12 +164,16 @@ while(option!=8)
                     break;
                 }
         }
-        PrintMenu();
-        option = int.Parse(Console.ReadLine());
     }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
+    }
+    finally
+    {
+        Console.WriteLine("Press to continue");
+        Console.ReadLine();
+        Console.Clear();
     }
 }
 

@@ -38,6 +38,12 @@ namespace Drone_Fleet_Console.Services
             {
                 drone.DisplayDrone();
             }
+
+            if (droneFleet.Count == 0)
+            {
+                Console.WriteLine("No drones in your fleet");
+            }
+
         }
 
         public void TestDrones()
