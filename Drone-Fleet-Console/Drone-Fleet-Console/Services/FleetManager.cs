@@ -30,8 +30,7 @@ namespace Drone_Fleet_Console.Services
                     return drone;
                 }
             }
-            Console.WriteLine("Drone not found.");
-            return null;
+            throw new ArgumentException($"Drone with ID {droneId} not found.");
         }
         public void DisplayDrones()
         {
@@ -39,6 +38,12 @@ namespace Drone_Fleet_Console.Services
             {
                 drone.DisplayDrone();
             }
+
+            if (droneFleet.Count == 0)
+            {
+                Console.WriteLine("No drones in your fleet");
+            }
+
         }
 
         public void TestDrones()

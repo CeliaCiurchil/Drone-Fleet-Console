@@ -20,7 +20,7 @@ namespace Drone_Fleet_Console.Models
         public required double CapacityKg { get; init; }
         public double CurrentLoadKg { get; private set; }
 
-        public Coordinates? CurrentWaypoint { get; set; }
+        public Coordinates? CurrentWaypoint { get; private set; }
 
 
         public bool Load(double kg)
