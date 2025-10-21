@@ -8,20 +8,18 @@ using Drone_Fleet_Console.Models.Interfaces;
 
 namespace Drone_Fleet_Console.Models
 {
-    internal class DeliveryDrone : Drone, ICargoCarrier, INavigable
+    public class DeliveryDrone : Drone, ICargoCarrier, INavigable
     {
+        public required double CapacityKg { get; init; }
+        public double CurrentLoadKg { get; private set; }
+        public Coordinates? CurrentWaypoint { get; private set; }
+
         [SetsRequiredMembers]
         public DeliveryDrone(double capacityKg) : base()
         {
-            Name = "Delivery Drone";
+            Name = "Delivery Drone" + DroneId;
             CapacityKg = capacityKg;
         }
-
-        public required double CapacityKg { get; init; }
-        public double CurrentLoadKg { get; private set; }
-
-        public Coordinates? CurrentWaypoint { get; private set; }
-
 
         public bool Load(double kg)
         {
@@ -34,25 +32,23 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"Loaded {kg} kg. Current load: {CurrentLoadKg} kg.");
             return true;
         }
-
-        public void SetWaypoint(Coordinates coordinates)
-        {
-            CurrentWaypoint = coordinates;
-        }
-
         public void UnloadAll()
         {
             CurrentLoadKg = 0;
             Console.WriteLine("All cargo unloaded. Current load: 0 kg.");
         }
+        public void SetWaypoint(Coordinates coordinates)
+        {
+            CurrentWaypoint = coordinates;
+        }
 
-        internal override void GetActions()
+        public override void GetActions()
         {
             Console.WriteLine("Actions for Delivery Drone:");
             Console.WriteLine("1. Load Cargo");
             Console.WriteLine("2. Unload Cargo");
         }
-        internal override void PerformAction(int? option = null)
+        public override void PerformAction(int? option = null)
         {
             switch (option)
             {
