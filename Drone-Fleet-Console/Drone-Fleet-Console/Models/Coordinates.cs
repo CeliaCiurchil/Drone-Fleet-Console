@@ -1,6 +1,6 @@
 ﻿namespace Drone_Fleet_Console.Models
 {
-    struct Coordinates
+    public struct Coordinates
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }

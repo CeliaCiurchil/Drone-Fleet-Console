@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Drone_Fleet_Console.Models
 {
-    internal class SurveyDrone : Drone, IPhotoCapture, INavigable
+    public class SurveyDrone : Drone, IPhotoCapture, INavigable
     {
         public int PhotoCount { get; private set; }
-
         public Coordinates? CurrentWaypoint { get; private set; }
-        public SurveyDrone()
+
+        public SurveyDrone() : base()
         {
             PhotoCount = 0;
-            Name = "Survey Drone";
+            Name = "Survey Drone " + DroneId;
         }
 
         public void SetWaypoint(Coordinates coordinates)
@@ -32,14 +32,15 @@ namespace Drone_Fleet_Console.Models
             }
             PhotoCount++;
             Console.WriteLine($"Photo taken. Total photos: {PhotoCount}");
+            BatteryPercentage -= 5;
         }
 
-        internal override void GetActions()
+        public override void GetActions()
         {
             Console.WriteLine($"Actions for {Name}:");
             Console.WriteLine("1. Take Photo");
         }
-        internal override void PerformAction(int? option = null)
+        public override void PerformAction(int? option = null)
         {
             switch (option)
             {

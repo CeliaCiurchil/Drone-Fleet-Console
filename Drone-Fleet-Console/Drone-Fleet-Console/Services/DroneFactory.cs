@@ -9,24 +9,32 @@ namespace Drone_Fleet_Console.Services
 {
     public class DroneFactory
     {
-        internal static Drone GetDrone(DroneType droneType)
+        public static Drone GetDrone(DroneType droneType)
         {
             switch (droneType)
             {
                 case DroneType.Survey:
                     return new SurveyDrone();
+
                 case DroneType.Delivery:
-                    {
-                        Console.Write("Enter capacity in kg for Delivery Drone: ");
-                        double capacityKg = double.Parse(Console.ReadLine());
-                        return new DeliveryDrone(capacityKg);
-                    }
+                    return CreateDeliveryDrone();
+                    
                 case DroneType.Racing:
                     return new RacingDrone();
+
                 default:
                     throw new ArgumentException("Invalid drone type");
             }
-            return null;
+        }
+
+        private static Drone CreateDeliveryDrone()
+        {
+            Console.Write("Enter capacity in kg for Delivery Drone: ");
+            if (!double.TryParse(Console.ReadLine(), out double capacityKg))
+            {
+                throw new ArgumentException("Invalid capacity. Please enter a valid number.");
+            }
+            return new DeliveryDrone(capacityKg);
         }
     }
 }

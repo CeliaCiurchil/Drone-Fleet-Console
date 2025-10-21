@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Drone_Fleet_Console.Models.Interfaces
 {
-    interface IFlightControl
+    public interface IFlightControl
     {
         void TakeOff();
         void Land();

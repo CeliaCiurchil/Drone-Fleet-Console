@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Drone_Fleet_Console.Services
 {
-    internal class FleetManager
+    public class FleetManager
     {
-        List<Drone> droneFleet;
+        private List<Drone> droneFleet;
 
         public FleetManager()
         {
@@ -33,21 +33,27 @@ namespace Drone_Fleet_Console.Services
             throw new ArgumentException($"Drone with ID {droneId} not found.");
         }
         public void DisplayDrones()
-        {
+        { 
+            if (droneFleet.Count == 0)
+            {
+                Console.WriteLine("No drones in your fleet");
+                return;
+            }
+
             foreach (var drone in droneFleet)
             {
                 drone.DisplayDrone();
             }
-
-            if (droneFleet.Count == 0)
-            {
-                Console.WriteLine("No drones in your fleet");
-            }
-
         }
 
         public void TestDrones()
         {
+            if (droneFleet.Count == 0)
+            {
+                Console.WriteLine("No drones to test.");
+                return;
+            }
+
             foreach (var drone in droneFleet)
             {
                 bool ok = drone.RunSelfTest();

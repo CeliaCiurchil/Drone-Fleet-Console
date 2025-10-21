@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Drone_Fleet_Console.Models.Interfaces
 {
-    interface ICargoCarrier
+    public interface ICargoCarrier
     {
         double CapacityKg { get; }
         double CurrentLoadKg { get; }
-        bool Load(double kg);
-        void UnloadAll();
+        bool Load(double kg, out string? message);
+        void UnloadAll(out string? message);
     }
 }

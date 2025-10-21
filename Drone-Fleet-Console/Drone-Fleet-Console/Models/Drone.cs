@@ -7,25 +7,27 @@ using System.Threading.Tasks;
 
 namespace Drone_Fleet_Console.Models
 {
-    abstract class Drone : IFlightControl, ISelfTest
+    public abstract class Drone : IFlightControl, ISelfTest
     {
         public static readonly int MinBatteryForTakeOff = 20;
+        private static int s_nextDroneId = 1;
+
+        public int DroneId { get; }
+        public string? Name { get; set; }
+        public int BatteryPercentage { get; protected set; }
+        public bool isAirborne { get; private set; }
+
+        static Drone()
+        {
+            Random rand = new Random();
+            s_nextDroneId = rand.Next(1000, 9999);
+        }
         public Drone()
         {
             DroneId = s_nextDroneId++;
             BatteryPercentage = 100;
             isAirborne = false;
         }
-        static Drone()
-        {
-            Random rand = new Random();
-            s_nextDroneId = rand.Next(1000, 9999);
-        }
-        public int DroneId { get; }
-        public string? Name { get; set; }
-        public int BatteryPercentage { get; set; }
-        public bool isAirborne { get; private set; }
-        static int s_nextDroneId = 1;
 
         public void TakeOff()
         {
@@ -41,19 +43,19 @@ namespace Drone_Fleet_Console.Models
             }
             isAirborne = true;
             Console.WriteLine($"Drone {Name} is flying.");
+            BatteryPercentage -= 10;
         }
-
         public void Land()
         {
             if(!isAirborne)
             {
-                Console.WriteLine("Drone is already on the ground.");
+                Console.WriteLine($"Drone {Name} is already on the ground.");
                 return;
             }
             isAirborne = false;
             Console.WriteLine($"Drone {Name} has landed successfully.");
+            BatteryPercentage -= 10;
         }
-
         public bool RunSelfTest()
         {
             return BatteryPercentage >= MinBatteryForTakeOff;
@@ -65,7 +67,6 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"Battery: {BatteryPercentage}%");
             Console.WriteLine($"Status: {(isAirborne ? "In Air" : "On Ground")}");
         }
-
         public bool Charge(int addPercent)
         {
             if (addPercent < 0 || addPercent > 100)
@@ -74,7 +75,6 @@ namespace Drone_Fleet_Console.Models
                 return false;
             }
 
-            // Safety: don’t allow charging while airborne
             if (isAirborne)
             {
                 Console.WriteLine("Cannot charge while airborne. Please land first.");
@@ -88,16 +88,16 @@ namespace Drone_Fleet_Console.Models
             }
 
             int before = BatteryPercentage;
-            // Clamp to 100
             BatteryPercentage = Math.Min(100, BatteryPercentage + addPercent);
 
             Console.WriteLine($"{Name} charged from {before}% to {BatteryPercentage}%.");
             return true;
         }
-
-
-        internal abstract void GetActions();
-        internal virtual void PerformAction(int? option = null)
+        public virtual void GetActions()
+        {
+            Console.WriteLine("No actions available for this drone type.");
+        }
+        public virtual void PerformAction(int? option = null)
         {
             Console.WriteLine("No actions available for this drone type.");
         }

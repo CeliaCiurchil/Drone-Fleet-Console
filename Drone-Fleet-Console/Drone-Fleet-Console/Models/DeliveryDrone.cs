@@ -8,59 +8,61 @@ using Drone_Fleet_Console.Models.Interfaces;
 
 namespace Drone_Fleet_Console.Models
 {
-    internal class DeliveryDrone : Drone, ICargoCarrier, INavigable
+    public class DeliveryDrone : Drone, ICargoCarrier, INavigable
     {
+        public required double CapacityKg { get; init; }
+        public double CurrentLoadKg { get; private set; }
+        public Coordinates? CurrentWaypoint { get; private set; }
+
         [SetsRequiredMembers]
         public DeliveryDrone(double capacityKg) : base()
         {
-            Name = "Delivery Drone";
+            Name = "Delivery Drone" + DroneId;
             CapacityKg = capacityKg;
         }
 
-        public required double CapacityKg { get; init; }
-        public double CurrentLoadKg { get; private set; }
-
-        public Coordinates? CurrentWaypoint { get; private set; }
-
-
-        public bool Load(double kg)
+        public bool Load(double kg, out string? message)
         {
+            message = null;
             if (kg <= 0 || kg + CurrentLoadKg > CapacityKg)
             {
-                Console.WriteLine("Cannot load cargo: exceeds capacity or invalid weight.");
+                message = "Cannot load cargo: exceeds capacity or invalid weight.";
                 return false;
             }
             CurrentLoadKg += kg;
-            Console.WriteLine($"Loaded {kg} kg. Current load: {CurrentLoadKg} kg.");
+            message = $"Loaded {kg} kg. Current load: {CurrentLoadKg} kg.";
+            BatteryPercentage -= 15; 
             return true;
         }
-
+        public void UnloadAll(out string? message)
+        {
+            message = null;
+            CurrentLoadKg = 0;
+            message="All cargo unloaded. Current load: 0 kg.";
+            BatteryPercentage -= 15;
+        }
         public void SetWaypoint(Coordinates coordinates)
         {
             CurrentWaypoint = coordinates;
         }
 
-        public void UnloadAll()
-        {
-            CurrentLoadKg = 0;
-            Console.WriteLine("All cargo unloaded. Current load: 0 kg.");
-        }
-
-        internal override void GetActions()
+        public override void GetActions()
         {
             Console.WriteLine("Actions for Delivery Drone:");
             Console.WriteLine("1. Load Cargo");
             Console.WriteLine("2. Unload Cargo");
         }
-        internal override void PerformAction(int? option = null)
+        public override void PerformAction(int? option = null)
         {
+            string? message = null;
             switch (option)
             {
                 case 1:
                     Console.Write("Enter weight to load (kg): ");
                     if (double.TryParse(Console.ReadLine(), out double loadWeight))
                     {
-                        Load(loadWeight);
+                        Load(loadWeight, out message);
+                        Console.WriteLine(message);
                     }
                     else
                     {
@@ -68,7 +70,8 @@ namespace Drone_Fleet_Console.Models
                     }
                     break;
                 case 2:
-                    UnloadAll();
+                    UnloadAll(out message);
+                    Console.WriteLine(message);
                     break;
                 default:
                     Console.WriteLine("Invalid action for Delivery Drone.");

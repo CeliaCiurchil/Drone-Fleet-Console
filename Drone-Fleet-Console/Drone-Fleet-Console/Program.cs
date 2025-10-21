@@ -30,6 +30,7 @@ while(option!=8)
     try
     {
         PrintMenu();
+
         if(!int.TryParse(Console.ReadLine(), out option))
         {
             Console.WriteLine("Invalid input. Please enter a number.");
@@ -48,6 +49,7 @@ while(option!=8)
                     fleetManager.DisplayDrones();
                     break;
                 }
+
             case 2:
                 {
                     Console.Write("Type (Survey/Delivery/Racing): ");
@@ -60,14 +62,15 @@ while(option!=8)
                     fleetManager.AddDrone(droneType);
                     break;
                 }
+
             case 3:
                 {
                     fleetManager.TestDrones();
                     break;
                 }
+
             case 4:
                 {
-                    // take off/land a selected drone
                     Console.Write("Enter drone id: ");
                     if(!int.TryParse(Console.ReadLine(), out int droneId))
                     {
@@ -76,14 +79,13 @@ while(option!=8)
                     }
 
                     Drone? drone = fleetManager.GetDroneById(droneId);
-                    if (drone.isAirborne) drone.Land();
+                    if (drone!.isAirborne) drone.Land();
                     else drone.TakeOff();
-                    
                     break;
                 }
+
             case 5:
                 {
-                    // set waypoint for a selected drone (lat , lon)
                     Console.Write("Enter drone id: ");
                     if (!int.TryParse(Console.ReadLine(), out int droneId))
                     {
@@ -121,9 +123,9 @@ while(option!=8)
 
                     break;
                 }
+
             case 6:
                 {
-                    // capability actions based on type of drones
                     Console.Write("Enter drone id: ");
                     if(!int.TryParse(Console.ReadLine(),out int droneId))
                     {
@@ -132,7 +134,7 @@ while(option!=8)
                     }
 
                     Drone? drone = fleetManager.GetDroneById(droneId);
-                    drone.GetActions();
+                    drone!.GetActions();
                     if(!int.TryParse(Console.ReadLine(), out int droneOption))
                     {
                         Console.WriteLine("Invalid option. Please enter a valid number.");
