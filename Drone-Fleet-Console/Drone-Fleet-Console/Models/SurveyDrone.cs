@@ -1,6 +1,6 @@
-﻿using Drone_Fleet_Console.Models.Interfaces;
+﻿using DroneFleetConsole.Models.Interfaces;
 
-namespace Drone_Fleet_Console.Models
+namespace DroneFleetConsole.Models
 {
     public class SurveyDrone : Drone, IPhotoCapture, INavigable
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drone_Fleet_Console.Models.Interfaces
+namespace DroneFleetConsole.Models.Interfaces
 {
     public interface INavigable
     {

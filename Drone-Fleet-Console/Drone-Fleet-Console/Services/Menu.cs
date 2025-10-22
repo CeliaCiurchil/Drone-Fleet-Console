@@ -1,19 +1,17 @@
-﻿using Drone_Fleet_Console.Models;
-using Drone_Fleet_Console.Models.Interfaces;
+﻿using DroneFleetConsole.Models;
+using DroneFleetConsole.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drone_Fleet_Console.Services
+namespace DroneFleetConsole.Services
 {
     public class Menu
     {
-
         public static void PrintOptions()
         {
-
             Console.WriteLine("""
                 1. List drones
                 2. Add drone
@@ -46,6 +44,7 @@ namespace Drone_Fleet_Console.Services
 
                     if (option == 8)
                     {
+                        Console.WriteLine("You chose exiting the program!");
                         break;
                     }
 
@@ -56,31 +55,26 @@ namespace Drone_Fleet_Console.Services
                                 ListDrones(fleetManager);
                                 break;
                             }
-
                         case 2:
                             {
                                 AddDrone(fleetManager);
                                 break;
                             }
-
                         case 3:
                             {
                                 PreFlightCheck(fleetManager);
                                 break;
                             }
-
                         case 4:
                             {
                                 TakeOffLand(fleetManager);
                                 break;
                             }
-
                         case 5:
                             {
                                 SetWaypoint(fleetManager);
                                 break;
                             }
-
                         case 6:
                             {
                                 CapabilityActions(fleetManager);
@@ -120,6 +114,7 @@ namespace Drone_Fleet_Console.Services
                 return;
             }
             Drone? drone = fleetManager.GetDroneById(droneId);
+
             Console.Write("Chraging drone...(Enter Percent): ");
             if (!int.TryParse(Console.ReadLine(), out int batteryPercent))
             {
@@ -166,11 +161,11 @@ namespace Drone_Fleet_Console.Services
             {
                 case "Load":
                     {
-                        ICargoCarrier carrierDrone = (ICargoCarrier)drone;
+                        ICargoCarrier carrierDrone = (ICargoCarrier)drone!;
                         Console.Write("Enter weight to load (kg): ");
                         if (double.TryParse(Console.ReadLine(), out double loadWeight))
                         {
-                            carrierDrone.Load(loadWeight, out message);
+                            carrierDrone.IsLoadValid(loadWeight, out message);
                             Console.WriteLine(message);
                         }
                         else
@@ -181,14 +176,14 @@ namespace Drone_Fleet_Console.Services
                     }
                 case "Unload":
                     {
-                        ICargoCarrier carrierDrone = (ICargoCarrier)drone;
+                        ICargoCarrier carrierDrone = (ICargoCarrier)drone!;
                         carrierDrone.UnloadAll(out message);
                         Console.WriteLine(message);
                         break;
                     }
                 case "Photo":
                     {
-                        SurveyDrone surveyDrone = (SurveyDrone)drone;
+                        SurveyDrone surveyDrone = (SurveyDrone)drone!;
                         surveyDrone.TakePhoto(out message);
                         Console.WriteLine(message);
                         break;
@@ -249,6 +244,7 @@ namespace Drone_Fleet_Console.Services
         {
             fleetManager.DisplayDrones();
         }
+
         private static void AddDrone(FleetManager fleetManager)
         {
             Console.Write("Type (Survey/Delivery/Racing): ");
@@ -260,6 +256,7 @@ namespace Drone_Fleet_Console.Services
             }
             fleetManager.AddDrone(droneType);
         }
+
         private static void TakeOffLand(FleetManager fleetManager)
         {
             Console.Write("Enter drone id: ");

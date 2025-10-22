@@ -1,11 +1,11 @@
-﻿using Drone_Fleet_Console.Models.Interfaces;
+﻿using DroneFleetConsole.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drone_Fleet_Console.Models
+namespace DroneFleetConsole.Models
 {
     public abstract class Drone : IFlightControl, ISelfTest
     {
@@ -22,6 +22,7 @@ namespace Drone_Fleet_Console.Models
             Random rand = new Random();
             s_nextDroneId = rand.Next(1000, 9999);
         }
+
         public Drone()
         {
             DroneId = s_nextDroneId++;
@@ -45,6 +46,7 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"Drone {Name} is flying.");
             BatteryPercentage -= 10;
         }
+
         public void Land()
         {
             if(!isAirborne)
@@ -56,10 +58,12 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"Drone {Name} has landed successfully.");
             BatteryPercentage -= 10;
         }
+
         public bool RunSelfTest()
         {
             return BatteryPercentage >= MinBatteryForTakeOff;
         }
+
         public void DisplayDrone()
         {
             Console.WriteLine($"Drone ID: {DroneId}");
@@ -67,6 +71,7 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"Battery: {BatteryPercentage}%");
             Console.WriteLine($"Status: {(isAirborne ? "In Air" : "On Ground")}");
         }
+
         public bool Charge(int addPercent)
         {
             if (addPercent < 0 || addPercent > 100)

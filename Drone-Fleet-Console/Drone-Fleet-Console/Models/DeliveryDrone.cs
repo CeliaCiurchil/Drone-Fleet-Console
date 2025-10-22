@@ -4,24 +4,23 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Drone_Fleet_Console.Models.Interfaces;
+using DroneFleetConsole.Models.Interfaces;
 
-namespace Drone_Fleet_Console.Models
+namespace DroneFleetConsole.Models
 {
     public class DeliveryDrone : Drone, ICargoCarrier, INavigable
     {
-        public required double CapacityKg { get; init; }
+        public double CapacityKg { get; init; }
         public double CurrentLoadKg { get; private set; }
         public Coordinates? CurrentWaypoint { get; private set; }
 
-        [SetsRequiredMembers]
         public DeliveryDrone(double capacityKg) : base()
         {
             Name = "Delivery Drone" + DroneId;
             CapacityKg = capacityKg;
         }
 
-        public bool Load(double kg, out string? message)
+        public bool IsLoadValid(double kg, out string? message)
         {
             message = null;
             if (kg <= 0 || kg + CurrentLoadKg > CapacityKg)
@@ -34,6 +33,7 @@ namespace Drone_Fleet_Console.Models
             BatteryPercentage -= 15; 
             return true;
         }
+
         public void UnloadAll(out string? message)
         {
             message = null;
@@ -41,6 +41,7 @@ namespace Drone_Fleet_Console.Models
             message="All cargo unloaded. Current load: 0 kg.";
             BatteryPercentage -= 15;
         }
+
         public void SetWaypoint(Coordinates coordinates)
         {
             CurrentWaypoint = coordinates;
