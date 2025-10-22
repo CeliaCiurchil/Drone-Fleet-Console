@@ -44,6 +44,7 @@ namespace DroneFleetConsole.Services
 
                     if (option == 8)
                     {
+                        Console.WriteLine("You chose exiting the program!");
                         break;
                     }
 
@@ -243,6 +244,7 @@ namespace DroneFleetConsole.Services
         {
             fleetManager.DisplayDrones();
         }
+
         private static void AddDrone(FleetManager fleetManager)
         {
             Console.Write("Type (Survey/Delivery/Racing): ");
@@ -254,6 +256,7 @@ namespace DroneFleetConsole.Services
             }
             fleetManager.AddDrone(droneType);
         }
+
         private static void TakeOffLand(FleetManager fleetManager)
         {
             Console.Write("Enter drone id: ");

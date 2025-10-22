@@ -15,18 +15,21 @@ namespace DroneFleetConsole.Services
         {
             droneFleet = new Dictionary<int,Drone>();
         }
+
         public void AddDrone(DroneType droneType)
         {
             Drone drone = DroneFactory.GetDrone(droneType);
             droneFleet[drone.DroneId]=drone;
             Console.WriteLine($"Added {drone.Name} with ID {drone.DroneId}");
         }
+
         public Drone? GetDroneById(int droneId)
         {
             if (!droneFleet.TryGetValue((droneId), out Drone? drone))
                 throw new ArgumentException($"Drone with ID {droneId} not found.");
             return drone;
         }
+
         public void DisplayDrones()
         { 
             if (droneFleet.Count == 0)

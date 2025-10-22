@@ -58,10 +58,12 @@ namespace DroneFleetConsole.Models
             Console.WriteLine($"Drone {Name} has landed successfully.");
             BatteryPercentage -= 10;
         }
+
         public bool RunSelfTest()
         {
             return BatteryPercentage >= MinBatteryForTakeOff;
         }
+
         public void DisplayDrone()
         {
             Console.WriteLine($"Drone ID: {DroneId}");
@@ -69,6 +71,7 @@ namespace DroneFleetConsole.Models
             Console.WriteLine($"Battery: {BatteryPercentage}%");
             Console.WriteLine($"Status: {(isAirborne ? "In Air" : "On Ground")}");
         }
+
         public bool Charge(int addPercent)
         {
             if (addPercent < 0 || addPercent > 100)
