@@ -9,28 +9,23 @@ namespace DroneFleetConsole.Services
 {
     public class FleetManager
     {
-        private List<Drone> droneFleet;
+        private Dictionary<int,Drone> droneFleet;
 
         public FleetManager()
         {
-            droneFleet = new List<Drone>();
+            droneFleet = new Dictionary<int,Drone>();
         }
         public void AddDrone(DroneType droneType)
         {
             Drone drone = DroneFactory.GetDrone(droneType);
-            droneFleet.Add(drone);
+            droneFleet[drone.DroneId]=drone;
             Console.WriteLine($"Added {drone.Name} with ID {drone.DroneId}");
         }
         public Drone? GetDroneById(int droneId)
         {
-            foreach (var drone in droneFleet)
-            {
-                if (drone.DroneId == droneId)
-                {
-                    return drone;
-                }
-            }
-            throw new ArgumentException($"Drone with ID {droneId} not found.");
+            if (!droneFleet.TryGetValue((droneId), out Drone? drone))
+                throw new ArgumentException($"Drone with ID {droneId} not found.");
+            return drone;
         }
         public void DisplayDrones()
         { 
@@ -40,7 +35,7 @@ namespace DroneFleetConsole.Services
                 return;
             }
 
-            foreach (var drone in droneFleet)
+            foreach (var (key,drone) in droneFleet)
             {
                 drone.DisplayDrone();
             }
@@ -54,7 +49,7 @@ namespace DroneFleetConsole.Services
                 return;
             }
 
-            foreach (var drone in droneFleet)
+            foreach (var (key, drone) in droneFleet)
             {
                 bool ok = drone.RunSelfTest();
                 string message = ok ? "Pass" : "Fail";

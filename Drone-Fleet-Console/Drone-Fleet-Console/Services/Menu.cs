@@ -12,7 +12,6 @@ namespace DroneFleetConsole.Services
     {
         public static void PrintOptions()
         {
-
             Console.WriteLine("""
                 1. List drones
                 2. Add drone
