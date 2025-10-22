@@ -1,9 +1,4 @@
 ﻿using Drone_Fleet_Console.Models.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Drone_Fleet_Console.Models
 {
@@ -23,15 +18,16 @@ namespace Drone_Fleet_Console.Models
             CurrentWaypoint = coordinates;
         }
 
-        public void TakePhoto()
+        public void TakePhoto(out string? message)
         {
+            message = null;
             if (!isAirborne)
             {
-                Console.WriteLine("Cannot take photo: Drone is not airborne. Please take off!");
+                message = "Cannot take photo: Drone is not airborne. Please take off!";
                 return;
             }
             PhotoCount++;
-            Console.WriteLine($"Photo taken. Total photos: {PhotoCount}");
+            message = $"Photo taken. Total photos: {PhotoCount}";
             BatteryPercentage -= 5;
         }
 
@@ -42,15 +38,17 @@ namespace Drone_Fleet_Console.Models
         }
         public override void PerformAction(int? option = null)
         {
+            string? message = null;
             switch (option)
             {
                 case 1:
-                    TakePhoto();
+                    TakePhoto(out message);
                     break;
                 default:
-                    Console.WriteLine("Invalid action for Survey Drone.");
+                    message = "Invalid action for Survey Drone.";
                     break;
             }
+            Console.WriteLine(message);
         }
     }
 }
