@@ -22,6 +22,7 @@ namespace DroneFleetConsole.Models
             Random rand = new Random();
             s_nextDroneId = rand.Next(1000, 9999);
         }
+
         public Drone()
         {
             DroneId = s_nextDroneId++;
@@ -45,6 +46,7 @@ namespace DroneFleetConsole.Models
             Console.WriteLine($"Drone {Name} is flying.");
             BatteryPercentage -= 10;
         }
+
         public void Land()
         {
             if(!isAirborne)

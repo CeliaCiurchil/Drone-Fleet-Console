@@ -10,7 +10,6 @@ namespace DroneFleetConsole.Services
 {
     public class Menu
     {
-
         public static void PrintOptions()
         {
 
@@ -56,31 +55,26 @@ namespace DroneFleetConsole.Services
                                 ListDrones(fleetManager);
                                 break;
                             }
-
                         case 2:
                             {
                                 AddDrone(fleetManager);
                                 break;
                             }
-
                         case 3:
                             {
                                 PreFlightCheck(fleetManager);
                                 break;
                             }
-
                         case 4:
                             {
                                 TakeOffLand(fleetManager);
                                 break;
                             }
-
                         case 5:
                             {
                                 SetWaypoint(fleetManager);
                                 break;
                             }
-
                         case 6:
                             {
                                 CapabilityActions(fleetManager);
@@ -120,6 +114,7 @@ namespace DroneFleetConsole.Services
                 return;
             }
             Drone? drone = fleetManager.GetDroneById(droneId);
+
             Console.Write("Chraging drone...(Enter Percent): ");
             if (!int.TryParse(Console.ReadLine(), out int batteryPercent))
             {
@@ -166,11 +161,11 @@ namespace DroneFleetConsole.Services
             {
                 case "Load":
                     {
-                        ICargoCarrier carrierDrone = (ICargoCarrier)drone;
+                        ICargoCarrier carrierDrone = (ICargoCarrier)drone!;
                         Console.Write("Enter weight to load (kg): ");
                         if (double.TryParse(Console.ReadLine(), out double loadWeight))
                         {
-                            carrierDrone.Load(loadWeight, out message);
+                            carrierDrone.IsLoadValid(loadWeight, out message);
                             Console.WriteLine(message);
                         }
                         else
@@ -181,14 +176,14 @@ namespace DroneFleetConsole.Services
                     }
                 case "Unload":
                     {
-                        ICargoCarrier carrierDrone = (ICargoCarrier)drone;
+                        ICargoCarrier carrierDrone = (ICargoCarrier)drone!;
                         carrierDrone.UnloadAll(out message);
                         Console.WriteLine(message);
                         break;
                     }
                 case "Photo":
                     {
-                        SurveyDrone surveyDrone = (SurveyDrone)drone;
+                        SurveyDrone surveyDrone = (SurveyDrone)drone!;
                         surveyDrone.TakePhoto(out message);
                         Console.WriteLine(message);
                         break;

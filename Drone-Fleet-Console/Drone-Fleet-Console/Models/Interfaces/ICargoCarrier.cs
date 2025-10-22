@@ -10,7 +10,7 @@ namespace DroneFleetConsole.Models.Interfaces
     {
         double CapacityKg { get; }
         double CurrentLoadKg { get; }
-        bool Load(double kg, out string? message);
+        bool IsLoadValid(double kg, out string? message);
         void UnloadAll(out string? message);
     }
 }

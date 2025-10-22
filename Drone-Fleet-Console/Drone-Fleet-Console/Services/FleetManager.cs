@@ -61,6 +61,5 @@ namespace DroneFleetConsole.Services
                 Console.WriteLine($"Drone ID {drone.DroneId} Pre-flight check: {message}");
             }
         }
-
     }
 }
