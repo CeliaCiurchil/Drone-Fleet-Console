@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Drone_Fleet_Console.Models.Interfaces;
+using DroneFleetConsole.Models.Interfaces;
 
-namespace Drone_Fleet_Console.Models
+namespace DroneFleetConsole.Models
 {
     public class DeliveryDrone : Drone, ICargoCarrier, INavigable
     {

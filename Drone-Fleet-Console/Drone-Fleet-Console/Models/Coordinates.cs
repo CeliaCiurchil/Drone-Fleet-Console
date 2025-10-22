@@ -1,4 +1,4 @@
-﻿namespace Drone_Fleet_Console.Models
+﻿namespace DroneFleetConsole.Models
 {
     public struct Coordinates
     {

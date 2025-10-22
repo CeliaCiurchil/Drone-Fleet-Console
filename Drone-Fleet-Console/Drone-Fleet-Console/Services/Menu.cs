@@ -1,12 +1,12 @@
-﻿using Drone_Fleet_Console.Models;
-using Drone_Fleet_Console.Models.Interfaces;
+﻿using DroneFleetConsole.Models;
+using DroneFleetConsole.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drone_Fleet_Console.Services
+namespace DroneFleetConsole.Services
 {
     public class Menu
     {

@@ -1,11 +1,11 @@
-﻿using Drone_Fleet_Console.Models.Interfaces;
+﻿using DroneFleetConsole.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drone_Fleet_Console.Models
+namespace DroneFleetConsole.Models
 {
     public abstract class Drone : IFlightControl, ISelfTest
     {
