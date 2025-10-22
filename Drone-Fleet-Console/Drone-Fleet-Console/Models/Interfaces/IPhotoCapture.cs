@@ -8,7 +8,7 @@ namespace Drone_Fleet_Console.Models.Interfaces
 {
     public interface IPhotoCapture
     {
-        void TakePhoto();
+        void TakePhoto(out string? message);
         int PhotoCount { get; }
     }
 }

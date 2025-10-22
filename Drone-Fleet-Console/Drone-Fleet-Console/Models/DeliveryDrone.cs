@@ -45,38 +45,5 @@ namespace Drone_Fleet_Console.Models
         {
             CurrentWaypoint = coordinates;
         }
-
-        public override void GetActions()
-        {
-            Console.WriteLine("Actions for Delivery Drone:");
-            Console.WriteLine("1. Load Cargo");
-            Console.WriteLine("2. Unload Cargo");
-        }
-        public override void PerformAction(int? option = null)
-        {
-            string? message = null;
-            switch (option)
-            {
-                case 1:
-                    Console.Write("Enter weight to load (kg): ");
-                    if (double.TryParse(Console.ReadLine(), out double loadWeight))
-                    {
-                        Load(loadWeight, out message);
-                        Console.WriteLine(message);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid weight input.");
-                    }
-                    break;
-                case 2:
-                    UnloadAll(out message);
-                    Console.WriteLine(message);
-                    break;
-                default:
-                    Console.WriteLine("Invalid action for Delivery Drone.");
-                    break;
-            }
-        }
     }
 }
