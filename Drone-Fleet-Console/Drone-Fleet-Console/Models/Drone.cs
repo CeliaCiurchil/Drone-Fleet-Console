@@ -93,13 +93,5 @@ namespace Drone_Fleet_Console.Models
             Console.WriteLine($"{Name} charged from {before}% to {BatteryPercentage}%.");
             return true;
         }
-        public virtual void GetActions()
-        {
-            Console.WriteLine("No actions available for this drone type.");
-        }
-        public virtual void PerformAction(int? option = null)
-        {
-            Console.WriteLine("No actions available for this drone type.");
-        }
     }
 }
